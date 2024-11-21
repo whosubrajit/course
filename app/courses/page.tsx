@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import { useRouter } from 'next/navigation'
 
 const courses = [
   { id: 1, name: 'Introduction to Computer Science', code: 'CS101', section: 'A' },
@@ -11,6 +13,14 @@ const courses = [
 
 export default function CoursesPage() {
   const [selectedCourses, setSelectedCourses] = useState<number[]>([])
+  const { user } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    }
+  }, [user, router])
 
   const toggleCourse = (courseId: number) => {
     setSelectedCourses(prev =>
@@ -18,6 +28,10 @@ export default function CoursesPage() {
         ? prev.filter(id => id !== courseId)
         : [...prev, courseId]
     )
+  }
+
+  if (!user) {
+    return null // or a loading spinner
   }
 
   return (
