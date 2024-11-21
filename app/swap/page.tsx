@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import { useRouter } from 'next/navigation'
 
 const courses = [
   { id: 1, name: 'Introduction to Computer Science', code: 'CS101', currentSection: 'A', availableSections: ['B', 'C'] },
@@ -11,12 +13,24 @@ const courses = [
 export default function SwapPage() {
   const [selectedCourse, setSelectedCourse] = useState<string>('')
   const [selectedSection, setSelectedSection] = useState<string>('')
+  const { user } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    }
+  }, [user, router])
 
   const handleSwapRequest = () => {
     if (selectedCourse && selectedSection) {
       console.log(`Swap request submitted for course ${selectedCourse} to section ${selectedSection}`)
       alert('Swap request submitted successfully!')
     }
+  }
+
+  if (!user) {
+    return null // or a loading spinner
   }
 
   return (
