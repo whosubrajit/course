@@ -28,7 +28,7 @@ export default function Home() {
           </>
         ) : (
           <Link href="/login" className="bg-blue-500 text-white p-4 rounded-lg text-center hover:bg-blue-600 transition-colors">
-            Login / Sign Up
+             Login / Sign Up
           </Link>
         )}
       </div>
